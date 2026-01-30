@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Navbar Responsive</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #ffffff;
+        }
+
+        /* ------------------- Navbar Desktop + Mobile ------------------- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #0066ff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #0066ff;
+        }
+
+        /* ปุ่ม Login / สมัคร */
+        .auth-btn {
+            padding: 10px 20px;
+            border-radius: 2px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .login-btn {
+            background: transparent;
+            border: 2px solid #0066ff;
+            color: #0066ff;
+        }
+
+        .signup-btn {
+            background: #0066ff;
+            border: none;
+            color: white;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);
+        }
+
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            transform: translateY(-100%);
+            transition: transform 0.35s ease-in-out;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 24px;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+        }
+
+        .mobile-menu a {
+            display: block;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: 500;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-menu .auth-btn {
+            margin-top: 30px;
+            width: 100%;
+            text-align: center;
+            font-size: 1.1rem;
+            padding: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .navbar .auth-btn.login-btn {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            /* background: #ffffff; */
+            padding: 5px;
+            border-radius: 8px;
+            overflow: hidden;
+            /* margin-top: 20px; */
+            /* box-shadow: 0 2px 8px rgba(0, 0, 0, .1); */
+            /* margin-bottom: 20px; */
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 70px);
+        }
+
+        .container-content {
+            flex: 1;
+            max-width: 600px;
+            margin: auto;
+            width: 100%;
+            padding: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #333;
+            margin-top: 80px;
+        }
+
+        /* เพิ่มใน <style> */
+        .weight-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+
+        }
+
+        #weight {
+            width: 100%;
+            padding: 10px 90px 10px 10px;
+            /* เว้นขวาให้ปุ่ม */
+            font-size: 16px;
+            border: 2px solid #0b54ca;
+            /* เปลี่ยนเป็น 2px solid เพื่อความชัดเจน */
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        #weight:focus {
+            outline: none;
+            border-color: #0b54ca;
+            box-shadow: 0 0 0 3px rgba(11, 84, 202, 0.2);
+        }
+
+        .btn-inside {
+            position: absolute;
+            right: 3px;
+            /* ห่างจากขอบขวา 4px */
+            top: 50%;
+            transform: translateY(-50%);
+            background: #0b54ca;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 14px;
+            /* height: 100%; */
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #0b54ca;
+            border-radius: 4px;
+        }
+
+        .btn-green {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .btn-purple {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 480px) {
+            .btn-purple {
+                padding: 10px;
+                font-size: 14px;
+                margin-top: 8px;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #f0f0f0;
+        }
+
+        .c-name {
+            margin-bottom: 15px;
+            width: 100%;
+            border: 2px solid #0b54ca;
+            /* เพิ่ม 2px solid เพื่อความชัดเจน */
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .c-name:focus {
+            outline: none;
+            border-color: #0b54ca;
+            box-shadow: 0 0 0 3px rgba(11, 84, 202, 0.2);
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        /* ───────────── Modal Styling ───────────── */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+        }
+
+        .modal-card {
+            background: white;
+            width: 90%;
+            max-height: 400px;
+            max-width: 600px;
+            border-radius: 2px;
+            padding: 45px 35px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            color: #666;
+            cursor: pointer;
+            line-height: 1;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        /* .modal-close:hover {
+            background: #f0f0f0;
+            color: #333;
+        } */
+
+        .modal-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-desc {
+            color: #555;
+            font-weight: 500;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-modal-save {
+            background: linear-gradient(135deg, #0070c0 0%, #0055a3 100%);
+            color: white;
+            border: none;
+            padding: 13px 28px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0, 112, 192, 0.25);
+        }
+
+        .btn-modal-details {
+            background: white;
+            color: #1a365d;
+            border: 2px solid #1a365d;
+            padding: 13px 28px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.25s ease;
+            background: #f8fafc;
+        }
+
+        .btn-modal-save:hover {
+            background: linear-gradient(135deg, #0055a3 0%, #003f7a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 112, 192, 0.35);
+        }
+
+        .btn-modal-details:hover {
+            background: white;
+            border-color: #0070c0;
+            color: #0070c0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 54, 93, 0.15);
+        }
+
+        /* ───────────── Details Modal Styling ───────────── */
+        .details-modal {
+            display: none;
+        }
+
+        .details-content {
+            width: 90%;
+            max-width: 700px;
+            background: white;
+            border-radius: 2px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .details-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .details-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .details-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .details-subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .details-info {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 2px dashed #ddd;
+        }
+
+        .info-group {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .details-table thead {
+            background: #f5f5f5;
+        }
+
+        .details-table th {
+            padding: 12px 10px;
+            text-align: center;
+            font-weight: 700;
+            color: #333;
+            font-size: 0.9rem;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .details-table td {
+            padding: 12px 10px;
+            text-align: center;
+            color: #555;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95rem;
+        }
+
+        .details-table tr:hover {
+            background: #fafafa;
+        }
+
+        .details-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn-back {
+            background: white;
+            color: #1a365d;
+            border: 2px solid #1a365d;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            flex: 1;
+        }
+
+        .btn-back:hover {
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 54, 93, 0.15);
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #0070c0 0%, #0055a3 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0, 112, 192, 0.25);
+        }
+
+        .btn-print:hover {
+            background: linear-gradient(135deg, #0055a3 0%, #003f7a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 112, 192, 0.35);
+        }
+
+        /* ───────────── Number Selection Styling ───────────── */
+        .number-selection {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .number-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        /* .number-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+            margin: 0;
+            white-space: nowrap;
+        } */
+
+        .number-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .number-btn {
+            width: 38px;
+            height: 38px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #333;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .number-btn:hover {
+            border-color: #0070c0;
+            color: #0070c0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 112, 192, 0.15);
+        }
+
+        .number-btn.active {
+            background: linear-gradient(135deg, #0070c0 0%, #0055a3 100%);
+            color: white;
+            border-color: #0070c0;
+            box-shadow: 0 4px 12px rgba(0, 112, 192, 0.3);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .number-selection {
+                gap: 10px;
+                margin-top: 15px;
+                margin-bottom: 8px;
+                flex-direction: row;
+                flex-wrap: nowrap;
+            }
+
+            .number-group {
+                gap: 4px;
+                padding: 6px 10px;
+                flex: 1;
+                min-width: 0;
+            }
+
+            .number-group label {
+                font-size: 0.7rem;
+                min-width: 35px;
+            }
+
+            .number-buttons {
+                gap: 3px;
+                flex: 1;
+            }
+
+            .number-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8rem;
+                padding: 0;
+                flex-shrink: 0;
+            }
+
+            .footer-section {
+                padding: 15px 10px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .number-selection {
+                gap: 6px;
+                margin-top: 10px;
+                margin-bottom: 5px;
+            }
+
+            .number-group {
+                gap: 2px;
+                padding: 5px 8px;
+            }
+
+            .number-group label {
+                font-size: 0.65rem;
+                min-width: 30px;
+            }
+
+            .number-buttons {
+                gap: 2px;
+            }
+
+            .number-btn {
+                width: 26px;
+                height: 26px;
+                font-size: 0.75rem;
+            }
+
+            .footer-section {
+                padding: 12px 8px !important;
+            }
+        }
+
+        /* ───────────── Footer Style ───────────── */
+        .footer-section {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            background: linear-gradient(180deg, #ffffff 0%, #f9f9f9 100%);
+            border-top: 2px solid #f0f0f0;
+            padding: 30px 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            box-sizing: border-box;
+        }
+
+        .container {
+            padding-bottom: 250px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding-bottom: 200px;
+            }
+        }
+
+        /* ───────────── Print Styling ───────────── */
+        @media print {
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                background: white;
+                font-size: 14px;
+            }
+
+            .navbar,
+            .mobile-menu,
+            .nav-links,
+            .nav-container,
+            .footer-section,
+            .modal-overlay,
+            .modal-close,
+            .details-footer,
+            .container-content,
+            .container {
+                display: none !important;
+            }
+
+            html, body {
+                width: 100%;
+                height: auto;
+                margin: 0;
+                padding: 0;
+            }
+
+            .details-content {
+                width: 100%;
+                max-width: 100%;
+                box-shadow: none;
+                padding: 40px;
+                max-height: 100%;
+                transform: none;
+                position: relative;
+                background: white;
+                border-radius: 0;
+                display: block !important;
+            }
+
+            .details-modal {
+                display: block !important;
+                position: relative;
+            }
+
+            .modal-overlay.details-modal {
+                position: relative !important;
+                background: white !important;
+                opacity: 1 !important;
+                z-index: auto !important;
+                width: 100%;
+                height: auto;
+                display: block !important;
+                top: 0;
+                left: 0;
+            }
+
+            .details-header {
+                margin-bottom: 20px;
+            }
+
+            .details-title {
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+
+            .details-subtitle {
+                font-size: 12px;
+                margin-bottom: 15px;
+            }
+
+            .details-info {
+                display: flex;
+                gap: 40px;
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .info-group {
+                flex: 1;
+            }
+
+            .info-label {
+                font-size: 11px;
+                color: #666;
+                margin-bottom: 5px;
+            }
+
+            .info-value {
+                font-size: 14px;
+                font-weight: 700;
+                color: #000;
+            }
+
+            .details-table {
+                margin: 15px 0;
+                width: 100%;
+            }
+
+            .details-table th,
+            .details-table td {
+                padding: 8px 10px;
+                border: 1px solid #ddd;
+                font-size: 12px;
+            }
+
+            .details-table th {
+                background: #f5f5f5;
+                font-weight: 700;
+            }
+
+            .details-table tr:hover {
+                background: white;
+            }
+
+            @page {
+                margin: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">App<span>ຂອງເຮົາ</span></a>
+
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+
+            <div style="display:flex; gap:12px; align-items:center;">
+                <button class="auth-btn login-btn">ตั้งค่า</button>
+
+                <button class="menu-toggle">☰</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <a href="#" class="active">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <button class="auth-btn login-btn"> ตั้งค่า</button>
+    </div>
+
+    <!-- พื้นที่เนื้อหา (ทดสอบ scroll) -->
+    <div class="container">
+        <div class="container-content">
+            <h1></h1>
+
+            <input class="c-name" type="text" id="customerName" placeholder="ຊື່ລູກຄ້າ" />
+
+            <!-- แทน <div class="form-group">…</div> และ <button class="btn-green">…</button> -->
+            <div class="weight-wrapper">
+                <input type="text" id="weight" placeholder="ນ້ຳໜັກຢາງພາລາ" />
+                <button class="btn-inside" onclick="addRecord()">ບັນທຶກ</button>
+            </div>
+
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ລຳດັບ</th>
+                        <th>ຊື່ລູກຄ້າ</th>
+                        <th>ນ້ຳໜັກ</th>
+                        <th>ລຶບ</th>
+                    </tr>
+                </thead>
+                <tbody id="recordTable">
+                    <!-- แถวข้อมูลจะเพิ่มที่นี่ -->
+                </tbody>
+            </table>
+           
+        </div>
+
+        <!-- Number Selection Footer -->
+        <div class="footer-section">
+            <div class="number-selection">
+                <div class="number-group">
+                    
+                    <div class="number-buttons">
+                        <button class="number-btn" onclick="selectNumber(this, 0)">0</button>
+                        <button class="number-btn" onclick="selectNumber(this, 1)">1</button>
+                        <button class="number-btn" onclick="selectNumber(this, 2)">2</button>
+                        <button class="number-btn" onclick="selectNumber(this, 3)">3</button>
+                        <button class="number-btn" onclick="selectNumber(this, 4)">4</button>
+                    </div>
+                </div>
+                <div class="number-group">
+                   
+                    <div class="number-buttons">
+                        <button class="number-btn" onclick="selectNumber(this, 5)">5</button>
+                        <button class="number-btn" onclick="selectNumber(this, 6)">6</button>
+                        <button class="number-btn" onclick="selectNumber(this, 7)">7</button>
+                        <button class="number-btn" onclick="selectNumber(this, 8)">8</button>
+                        <button class="number-btn" onclick="selectNumber(this, 9)">9</button>
+                    </div>
+                </div>
+            </div>
+             <button class="btn-purple" onclick="showSaveModal()">ບັນທຶກທັງຫມົດ</button>
+        </div>
+    </div>
+
+    <!-- Modal HTML -->
+    <div class="modal-overlay" id="saveModal">
+        <div class="modal-card">
+            <div class="modal-close" onclick="closeModal()">&times;</div>
+            <div class="modal-title">ຢືນຢັນການບັນທຶກ</div>
+            <div class="modal-desc">ທ່ານຕ້ອງການຈັດການຂໍ້ມູນທັງໝົດແນວໃດ?</div>
+            <div class="modal-actions">
+                <button class="btn-modal-details" onclick="viewDetails()">ໃບບິນ</button>
+                <button class="btn-modal-save" onclick="confirmSaveAll()">ບັນທຶກ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal HTML -->
+    <div class="modal-overlay details-modal" id="detailsModal">
+        <div class="details-content">
+            <div class="modal-close" onclick="closeDetailsModal()">&times;</div>
+            <div class="details-header">
+                <div class="details-title">ໃບບິນຂາຍຢາງພາລາ</div>
+                <div class="details-subtitle" id="detailsDate"></div>
+            </div>
+
+            <div class="details-info">
+                <div class="info-group">
+                    <div class="info-label">ຊື່ລູກຄ້າ</div>
+                    <div class="info-value" id="detailsCustomerName">-</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">ນ້ຳໜັກທັງໝົດ</div>
+                    <div class="info-value" id="detailsTotalWeight">0 kg</div>
+                </div>
+            </div>
+
+            <table class="details-table">
+                <thead>
+                    <tr>
+                        <th>ລຳດັບ</th>
+                        <th>ນ້ຳໜັກ</th>
+                        <th>ລຳດັບ</th>
+                        <th>ນ້ຳໜັກ</th>
+                    </tr>
+                </thead>
+                <tbody id="detailsTableBody">
+                    <!-- Data will be populated here -->
+                </tbody>
+            </table>
+            <div class="details-info">
+                <div class="info-group">
+                    <div class="info-label">ລວມເງີນທັງໝົດ</div>
+                    <div class="info-value" id="detailsTotalMoney">0 kg × 35 = 0 ฿</div>
+                </div>
+            </div>
+             
+            <div class="details-footer">
+                <button class="btn-back" onclick="closeDetailsModal()">ກັບໄປ</button>
+                <button class="btn-print" onclick="printDetails()">ພິມ</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileMenu = document.querySelector('.mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+
+            // เปลี่ยนไอคอน hamburger เป็น × (optional)
+            if (mobileMenu.classList.contains('active')) {
+                menuToggle.textContent = '✕';
+            } else {
+                menuToggle.textContent = '☰';
+            }
+        });
+
+        // ปิดเมนูเมื่อกด link (สำหรับ single page app)
+        document.querySelectorAll('.mobile-menu a, .mobile-menu button').forEach(item => {
+            item.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                menuToggle.textContent = '☰';
+            });
+        });
+        let count = 1;
+
+        function addRecord() {
+            const name = document.getElementById('customerName').value.trim();
+            const weight = document.getElementById('weight').value.trim();
+
+            if (!name || !weight) {
+                alert('ກະລຸນากรอกຊື່ລູກຄ້າ และ ນ້ຳໜັກ');
+                return;
+            }
+
+            const table = document.getElementById('recordTable');
+            const row = table.insertRow();
+            row.insertCell(0).innerText = count++;
+            row.insertCell(1).innerText = name;
+            row.insertCell(2).innerText = weight;
+            row.insertCell(3).innerHTML = '<button class="btn-delete" onclick="deleteRow(this)">ລຶບ</button>';
+
+            // เคลียร์ช่องน้ำหนัก
+            document.getElementById('weight').value = '';
+        }
+
+        function deleteRow(btn) {
+            const row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+            updateSequence();
+        }
+
+        function updateSequence() {
+            const table = document.getElementById('recordTable');
+            const rows = table.getElementsByTagName('tr');
+            count = 1;
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].cells[0].innerText = count++;
+            }
+        }
+
+        function showSaveModal() {
+            const modal = document.getElementById('saveModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('saveModal');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 200);
+        }
+
+        function viewDetails() {
+            const table = document.getElementById('recordTable');
+            const rows = table.getElementsByTagName('tr');
+
+            if (rows.length === 0) {
+                alert('ບໍ່ມີຂໍ້ມູນເພື່ອສະແດງ');
+                return;
+            }
+
+            // Get the first record's name (all records are for the same customer)
+            const customerName = rows[0].cells[1].innerText;
+            document.getElementById('detailsCustomerName').innerText = customerName;
+
+            // Calculate total weight
+            let totalWeight = 0;
+            const detailsTableBody = document.getElementById('detailsTableBody');
+            detailsTableBody.innerHTML = '';
+
+            // Create pairs of rows for left and right columns
+            for (let i = 0; i < rows.length; i += 2) {
+                const newRow = detailsTableBody.insertRow();
+                
+                // Left side (row i)
+                const leftRowNum = i + 1;
+                const leftWeight = parseFloat(rows[i].cells[2].innerText);
+                totalWeight += leftWeight;
+                
+                newRow.insertCell(0).innerText = leftRowNum;
+                newRow.insertCell(1).innerText = leftWeight + ' kg';
+                
+                // Right side (row i+1) - only if it exists
+                if (i + 1 < rows.length) {
+                    const rightRowNum = i + 2;
+                    newRow.insertCell(2).innerText = rightRowNum;
+                    const rightWeight = parseFloat(rows[i + 1].cells[2].innerText);
+                    totalWeight += rightWeight;
+                    newRow.insertCell(3).innerText = rightWeight + ' kg';
+                } else {
+                    // If no right side, add empty cells
+                    newRow.insertCell(2).innerText = '';
+                    newRow.insertCell(3).innerText = '';
+                }
+            }
+
+            document.getElementById('detailsTotalWeight').innerText = totalWeight + ' kg';
+            
+            // Calculate total money (1 kg = 35 baht)
+            const pricePerKg = 35;
+            const totalMoney = totalWeight * pricePerKg;
+            document.getElementById('detailsTotalMoney').innerText = totalWeight + ' kg × ' + pricePerKg + ' = ' + totalMoney.toFixed(2) + ' ฿';
+            
+            // Set date and time
+            const today = new Date();
+            const formattedDate = 'ວັນທີ: ' + today.toLocaleDateString('lo-LA') + ' | ເວລາ: ' + today.toLocaleTimeString('lo-LA', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('detailsDate').innerText = formattedDate;
+
+            // Show details modal
+            closeModal(); // Close the save modal first
+            const detailsModal = document.getElementById('detailsModal');
+            detailsModal.classList.add('details-modal');
+            detailsModal.style.display = 'flex';
+            setTimeout(() => detailsModal.classList.add('active'), 10);
+        }
+
+        function closeDetailsModal() {
+            const detailsModal = document.getElementById('detailsModal');
+            detailsModal.classList.remove('active');
+            setTimeout(() => {
+                detailsModal.style.display = 'none';
+                detailsModal.classList.remove('details-modal');
+            }, 200);
+        }
+
+        function printDetails() {
+            window.print();
+        }
+
+        function confirmSaveAll() {
+            alert('ບັນທຶກຂໍ້ມູນທັງໝົດສຳເລັດແລ້ວ!');
+            closeModal();
+        }
+
+        function submitAll() {
+            showSaveModal();
+        }
+
+        function selectNumber(btn, number) {
+            // Remove active class from all number buttons
+            document.querySelectorAll('.number-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            btn.classList.add('active');
+            
+            // Add the number to the weight input field
+            const weightInput = document.getElementById('weight');
+            weightInput.value += number;
+            weightInput.focus();
+        }
+    </script>
+</body>
+
+</html>
